@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2>Ocorrências</h2>
-        <p class="text-muted">Registre manutenção, pertences esquecidos e solicitações do casal.</p>
+        
     </div>
     <a href="index.php?page=ocorrencias&action=create" class="btn btn-primary">Nova ocorrência</a>
 </div>

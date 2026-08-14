@@ -1,7 +1,7 @@
 <?php require __DIR__ . '/../layout/header.php'; ?>
 <div class="mb-4">
     <h2><?php echo isset($ocorrencia) ? 'Editar ocorrência' : 'Nova ocorrência'; ?></h2>
-    <p class="text-muted">Vincule a ocorrência à suíte ou a um hóspede específico.</p>
+    
 </div>
 <?php if (!empty($errors)): ?>
     <div class="alert alert-danger">
@@ -16,8 +16,8 @@
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Suíte</label>
-            <select name="apartamento_id" class="form-select" required>
-                <option value="">Selecione uma suíte</option>
+            <select name="apartamento_id" class="form-select">
+                <option value="">Não Obrigatório</option>
                 <?php foreach ($suites as $suite): ?>
                     <option value="<?php echo $suite['id']; ?>" <?php echo (isset($ocorrencia['apartamento_id']) ? $ocorrencia['apartamento_id'] : '') == $suite['id'] ? 'selected' : ''; ?>>
                         <?php echo htmlspecialchars($suite['numero'] . ' - ' . $suite['categoria']); ?>
@@ -25,10 +25,13 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
+
+
         <div class="mb-3">
             <label class="form-label">Hóspede (opcional)</label>
             <select name="morador_id" class="form-select">
-                <option value="">Sem vínculo direto</option>
+                <option value="">Não Obrigatório</option>
                 <?php foreach ($hospedes as $hospede): ?>
                     <option value="<?php echo $hospede['id']; ?>" <?php echo (isset($ocorrencia['morador_id']) ? $ocorrencia['morador_id'] : '') == $hospede['id'] ? 'selected' : ''; ?>>
                         <?php echo htmlspecialchars($hospede['cpf'] . ' (Suíte ' . $hospede['apartamento_numero'] . ')'); ?>
@@ -36,6 +39,9 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
+
+
         <div class="mb-3">
             <label class="form-label">Título</label>
             <input type="text" name="titulo" class="form-control" required value="<?php echo htmlspecialchars($ocorrencia['titulo'] ?? ''); ?>">

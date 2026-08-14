@@ -18,6 +18,19 @@ class ApartamentoController
 
     public function index(): void
     {
+        // Recalcula status de todas as suítes rapidamente antes de exibir
+        $suites = $this->model->all();
+        foreach ($suites as $s) {
+            $id = (int)$s['id'];
+            $limite = $this->model->getLimiteHospedes($id);
+            $total = $this->hospedeModel->countByApartamento($id);
+            $status = $total >= $limite ? 'Ocupado' : 'Disponivel';
+            if ($s['status'] !== $status) {
+                $this->model->updateStatus($id, $status);
+            }
+        }
+
+        // Buscar novamente para garantir exibição com status atualizados
         $suites = $this->model->all();
         require __DIR__ . '/../views/suites/index.php';
     }
@@ -45,12 +58,14 @@ class ApartamentoController
             }
 
             if (empty($errors)) {
+                $auto_status = isset($_POST['auto_status']) ? 1 : 0;
                 $this->model->create([
                     'numero' => $numero,
                     'bloco_andar' => $bloco_andar,
                     'categoria' => $categoria,
                     'limite_hospedes' => $limite_hospedes,
-                    'status' => 'Disponivel'
+                    'status' => $status,
+                    'auto_status' => $auto_status,
                 ]);
                 header('Location: index.php?page=suites');
                 exit;
@@ -91,13 +106,15 @@ class ApartamentoController
             }
 
             if (empty($errors)) {
-                $status = $this->calculateSuiteStatus($id, $limite_hospedes);
+                // Respeita o status e auto_status enviados pelo usuário no formulário.
+                $auto_status = isset($_POST['auto_status']) ? 1 : 0;
                 $this->model->update($id, [
                     'numero' => $numero,
                     'bloco_andar' => $bloco_andar,
                     'categoria' => $categoria,
                     'limite_hospedes' => $limite_hospedes,
-                    'status' => $status
+                    'status' => $status,
+                    'auto_status' => $auto_status,
                 ]);
                 header('Location: index.php?page=suites');
                 exit;

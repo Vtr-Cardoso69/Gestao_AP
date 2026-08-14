@@ -6,7 +6,8 @@ class Hospede extends BaseModel
 {
     public function all(): array
     {
-        $stmt = $this->db->query('SELECT m.*, a.numero AS apartamento_numero FROM moradores m JOIN apartamentos a ON m.apartamento_id = a.id ORDER BY a.numero, m.id');
+        // Usar LEFT JOIN para incluir hóspedes sem apartamento vinculado
+        $stmt = $this->db->query('SELECT m.*, a.numero AS apartamento_numero FROM moradores m LEFT JOIN apartamentos a ON m.apartamento_id = a.id ORDER BY a.numero, m.id');
         return $stmt->fetchAll();
     }
 
@@ -62,6 +63,11 @@ class Hospede extends BaseModel
 
     public function countByApartamento(int $apartamentoId): int
     {
+        // Se o id for inválido (0 ou negativo), não há hóspedes
+        if ($apartamentoId <= 0) {
+            return 0;
+        }
+
         $stmt = $this->db->prepare('SELECT COUNT(*) FROM moradores WHERE apartamento_id = :apartamento_id');
         $stmt->execute(['apartamento_id' => $apartamentoId]);
         return (int)$stmt->fetchColumn();
@@ -70,7 +76,8 @@ class Hospede extends BaseModel
     public function search(string $term): array
     {
         $searchTerm = "%{$term}%";
-        $sql = 'SELECT m.*, a.numero AS apartamento_numero FROM moradores m JOIN apartamentos a ON m.apartamento_id = a.id WHERE m.cpf LIKE ? OR m.telefone LIKE ? OR a.numero LIKE ? ORDER BY a.numero, m.id';
+        // LEFT JOIN para não excluir hóspedes sem apartamento
+        $sql = 'SELECT m.*, a.numero AS apartamento_numero FROM moradores m LEFT JOIN apartamentos a ON m.apartamento_id = a.id WHERE m.cpf LIKE ? OR m.telefone LIKE ? OR a.numero LIKE ? ORDER BY a.numero, m.id';
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$searchTerm, $searchTerm, $searchTerm]);
         return $stmt->fetchAll();

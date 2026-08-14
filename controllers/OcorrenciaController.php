@@ -37,8 +37,9 @@ class OcorrenciaController
             $tipo_ocorrencia = $_POST['tipo_ocorrencia'] ?? 'Quarto';
             $status = $_POST['status'] ?? 'Pendente';
 
-            if ($apartamento_id <= 0) {
-                $errors[] = 'Selecione uma suíte.';
+            // Exigir ao menos uma referência: suíte ou hóspede
+            if ($apartamento_id <= 0 && $morador_id <= 0) {
+                $errors[] = 'Selecione uma suíte ou escolha um hóspede.';
             }
             if ($titulo === '') {
                 $errors[] = 'Título é obrigatório.';
@@ -85,8 +86,9 @@ class OcorrenciaController
             $tipo_ocorrencia = $_POST['tipo_ocorrencia'] ?? 'Quarto';
             $status = $_POST['status'] ?? 'Pendente';
 
-            if ($apartamento_id <= 0) {
-                $errors[] = 'Selecione uma suíte.';
+            // Exigir ao menos uma referência: suíte ou hóspede
+            if ($apartamento_id <= 0 && $morador_id <= 0) {
+                $errors[] = 'Selecione uma suíte ou escolha um hóspede.';
             }
             if ($titulo === '') {
                 $errors[] = 'Título é obrigatório.';

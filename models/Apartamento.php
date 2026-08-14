@@ -19,32 +19,34 @@ class Apartamento extends BaseModel
 
     public function create(array $data): bool
     {
-        $stmt = $this->db->prepare('INSERT INTO apartamentos (numero, bloco_andar, categoria, limite_hospedes, status) VALUES (:numero, :bloco_andar, :categoria, :limite_hospedes, :status)');
+        $stmt = $this->db->prepare('INSERT INTO apartamentos (numero, bloco_andar, categoria, limite_hospedes, status, auto_status) VALUES (:numero, :bloco_andar, :categoria, :limite_hospedes, :status, :auto_status)');
         return $stmt->execute([
             'numero' => $data['numero'],
             'bloco_andar' => $data['bloco_andar'],
             'categoria' => $data['categoria'],
             'limite_hospedes' => $data['limite_hospedes'],
             'status' => $data['status'],
+            'auto_status' => $data['auto_status'] ?? 1,
         ]);
     }
 
     public function update(int $id, array $data): bool
     {
-        $stmt = $this->db->prepare('UPDATE apartamentos SET numero = :numero, bloco_andar = :bloco_andar, categoria = :categoria, limite_hospedes = :limite_hospedes, status = :status WHERE id = :id');
+        $stmt = $this->db->prepare('UPDATE apartamentos SET numero = :numero, bloco_andar = :bloco_andar, categoria = :categoria, limite_hospedes = :limite_hospedes, status = :status, auto_status = :auto_status WHERE id = :id');
         return $stmt->execute([
             'numero' => $data['numero'],
             'bloco_andar' => $data['bloco_andar'],
             'categoria' => $data['categoria'],
             'limite_hospedes' => $data['limite_hospedes'],
             'status' => $data['status'],
+            'auto_status' => $data['auto_status'] ?? 1,
             'id' => $id,
         ]);
     }
 
     public function updateStatus(int $id, string $status): bool
     {
-        $stmt = $this->db->prepare('UPDATE apartamentos SET status = :status WHERE id = :id');
+        $stmt = $this->db->prepare('UPDATE apartamentos SET status = :status WHERE id = :id AND auto_status = 1');
         return $stmt->execute(['status' => $status, 'id' => $id]);
     }
 

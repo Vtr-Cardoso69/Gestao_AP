@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2>Suítes</h2>
-        <p class="text-muted">Gestão de suítes e temas românticos.</p>
+       
     </div>
     <a href="index.php?page=suites&action=create" class="btn btn-primary">Nova suíte</a>
 </div>

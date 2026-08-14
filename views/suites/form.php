@@ -45,6 +45,11 @@
                 <option value="Ocupado" <?php echo $selectedStatus === 'Ocupado' ? 'selected' : ''; ?>>Ocupado</option>
             </select>
         </div>
+        <div class="mb-3 form-check">
+            <?php $auto = isset($suite['auto_status']) ? (int)$suite['auto_status'] : 1; ?>
+            <input class="form-check-input" type="checkbox" value="1" id="auto_status" name="auto_status" <?php echo $auto === 1 ? 'checked' : ''; ?>>
+            <label class="form-check-label" for="auto_status">Habilitar atualização automática de status (ativo por padrão)</label>
+        </div>
         <button type="submit" class="btn btn-primary"><?php echo isset($suite) ? 'Salvar alterações' : 'Cadastrar suíte'; ?></button>
         <a href="index.php?page=suites" class="btn btn-outline-secondary">Cancelar</a>
     </form>

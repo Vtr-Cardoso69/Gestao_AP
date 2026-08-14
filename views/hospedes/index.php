@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2>Hóspedes</h2>
-        <p class="text-muted">Cadastro anônimo com CPF e telefone para contato emergencial.</p>
+        
     </div>
     <a href="index.php?page=hospedes&action=create" class="btn btn-primary">Novo hóspede</a>
 </div>
